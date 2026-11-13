@@ -65,3 +65,22 @@
 @media(max-width:900px){.experts-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.footer-pro .footer-columns{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:620px){.experts-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}.expert-info h3{font-size:15px}.expert-bio{font-size:10px}.expert-role{font-size:9px}.portfolio-stats{gap:12px;padding:18px 0 22px}.portfolio-stats div{flex-direction:column;gap:3px;align-items:start}.portfolio-stats span{font-size:8px}.portfolio-stats strong{font-size:32px}.phase-strip{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}.phase-strip>span{min-width:0}.phase-strip>span:nth-child(2n){border-right:0}.footer.footer-pro{padding-top:55px}.footer-pro .footer-columns{grid-template-columns:1fr 1fr;gap:31px 20px}.footer-pro .footer-company{grid-column:1/-1}.footer-pro .footer-bottom{align-items:flex-start;flex-direction:column;gap:6px;margin-top:35px;padding-bottom:27px}.footer-pro .footer-column>a:not(.footer-logo){font-size:10px}.footer-pro .footer-column h3{font-size:13px}.values-four{grid-template-columns:1fr 1fr;gap:18px}.contact-phone-inline{font-size:11px}}
 @media(max-width:380px){.experts-grid{grid-template-columns:1fr 1fr;gap:12px}.expert-info h3{font-size:14px}.footer-pro .footer-columns{grid-template-columns:1fr}.footer-pro .footer-company{grid-column:auto}}
+
+/* ALTIVIA v2.1: aplicación de logotipos oficiales PNG */
+.brand{display:flex;flex-direction:column;align-items:flex-start;width:100%;margin-bottom:57px;}
+.brand-img{display:block;width:194px;max-width:100%;height:auto;min-height:0;aspect-ratio:1821 / 481;object-fit:contain;object-position:left center;}
+.mobile-logo{display:flex;align-items:center;height:100%;min-width:0;max-width:calc(100% - 66px);}
+.mobile-logo img{display:block;width:181px;max-width:100%;height:auto;max-height:53px;object-fit:contain;object-position:left center;}
+.footer-pro .footer-logo{display:inline-flex;align-items:center;width:195px;max-width:100%;margin-bottom:22px;}
+.footer-pro .footer-logo img{display:block;width:100%;max-width:195px;height:auto;aspect-ratio:1475 / 706;object-fit:contain;object-position:left center;}
+@media(max-width:900px){
+ .brand{margin-bottom:44px;}
+ .mobile-header{gap:12px;}
+ .mobile-logo img{width:184px;}
+}
+@media(max-width:380px){
+ .mobile-logo img{width:165px;}
+ .footer-pro .footer-logo{width:178px;}
+}
+
+.modal-visual{display:flex;flex-direction:column;background:#e7edf0}.modal-gallery{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;padding:10px;background:#f0f4f6;border-top:1px solid var(--line)}.modal-thumb{border:1px solid #d5dfe6;padding:0;background:#fff;aspect-ratio:1.35;overflow:hidden;transition:border-color .2s,transform .2s}.modal-thumb img{width:100%;height:100%;object-fit:cover;display:block}.modal-thumb.active,.modal-thumb:hover{border-color:var(--navy);transform:translateY(-1px)}@media(max-width:620px){.modal-visual{display:block}.modal-gallery{grid-template-columns:repeat(2,minmax(0,1fr));padding:8px}.modal-thumb{aspect-ratio:1.2}}
