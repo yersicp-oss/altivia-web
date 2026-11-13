@@ -36,7 +36,7 @@
       card.classList.toggle('hidden-card', !visible);
       if (visible) n++;
     });
-    if (count) count.textContent = `${n} ${n === 1 ? 'registro' : 'registros'} de experiencia`;
+    if (count) count.textContent = `${n} ${n === 1 ? 'proyecto' : 'proyectos'} seleccionados`;
     if (empty) empty.hidden = n !== 0;
   }
   filters.forEach(btn => btn.addEventListener('click', () => {
@@ -45,6 +45,11 @@
     filterProjects();
   }));
   search?.addEventListener('input', filterProjects);
+  const requestedCategory = new URLSearchParams(window.location.search).get('categoria');
+  if (requestedCategory && filters.some(btn => btn.dataset.filter === requestedCategory)) {
+    currentCategory = requestedCategory;
+    filters.forEach(b => {b.classList.toggle('active', b.dataset.filter === requestedCategory);b.setAttribute('aria-pressed', String(b.dataset.filter === requestedCategory));});
+  }
   filterProjects();
 
   const modalOverlay = $('#project-modal');
@@ -53,6 +58,8 @@
   const modalDesc = $('#modal-description');
   const modalList = $('#modal-list');
   const modalCategory = $('#modal-category');
+  const modalMeta = $('#modal-meta');
+  const modalCredit = $('#modal-credit');
   let previousFocus = null;
   function openModal(card) {
     if (!modalOverlay || !card) return;
@@ -61,6 +68,8 @@
     if (modalTitle) modalTitle.textContent = card.dataset.title||'';
     if (modalDesc) modalDesc.textContent = card.dataset.description||'';
     if (modalCategory) modalCategory.textContent = card.dataset.label||'Experiencia';
+    if (modalMeta) { modalMeta.textContent = [card.dataset.client, card.dataset.location].filter(Boolean).join('  ·  '); }
+    if (modalCredit) {modalCredit.textContent=card.dataset.credit||'';}
     if (modalList) {
       modalList.replaceChildren();
       (card.dataset.tasks||'').split('|').filter(Boolean).forEach(task => {
@@ -95,26 +104,7 @@
   const settings = window.ALTIVIA_CONFIG||{};
   $$('[data-contact-email]').forEach(el => { if(settings.email){el.textContent=settings.email; el.href='mailto:'+settings.email;} else el.hidden=true; });
   $$('[data-linkedin]').forEach(el => { if(settings.linkedin) el.href=settings.linkedin; else el.hidden=true; });
-  const contactForm = $('#contact-form');
-  contactForm?.addEventListener('submit', e => {
-    e.preventDefault();
-    if (!contactForm.reportValidity()) return;
-    const status = $('#form-status');
-    if (!settings.email || !/^\S+@\S+\.\S+$/.test(settings.email)) {
-      if(status){status.textContent='Antes de utilizar el formulario, el administrador debe configurar el correo corporativo en assets/js/config.js.';status.classList.add('show');status.setAttribute('role','alert');}
-      return;
-    }
-    const data = new FormData(contactForm);
-    const clean=(name)=>String(data.get(name)||'').trim();
-    const subject = `[ALTIVIA Web] ${clean('servicio')||'Consulta profesional'} — ${clean('nombre')}`;
-    const body = [
-      'Solicitud de contacto desde ALTIVIA Web','',
-      'Nombre: '+clean('nombre'), 'Empresa: '+clean('empresa'), 'Correo: '+clean('correo'),
-      'Servicio: '+clean('servicio'), '', 'Mensaje:', clean('mensaje')
-    ].join('\n');
-    // Se abre el programa de correo del visitante. No se envía automáticamente.
-    window.location.href=`mailto:${encodeURIComponent(settings.email)}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-    if(status){status.textContent='Se abrió tu aplicación de correo con la consulta preparada. Revisa el mensaje y pulsa Enviar desde tu correo.';status.classList.add('show');status.setAttribute('role','status');}
-  });
+  // El formulario se envía directamente a FormSubmit mediante POST HTML.
+  // No se intercepta submit: funciona también sin JavaScript.
   const year = $('#year'); if(year) year.textContent = String(new Date().getFullYear());
 })();

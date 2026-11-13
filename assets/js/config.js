@@ -1,10 +1,9 @@
-/* CONFIGURACIÓN DEL SITIO
- * Reemplazar los campos de abajo antes de publicar.
- * El correo se utiliza para preparar consultas desde el formulario,
- * sin guardar ni enviar datos a servidores externos.
+/* Datos públicos de contacto de ALTIVIA.
+ * Los formularios utilizan el servicio externo FormSubmit para entregar los mensajes.
+ * Se requiere activar el destinatario con el enlace que llegará al correo corporativo.
  */
 window.ALTIVIA_CONFIG = {
-  email: '', // ejemplo: contacto@tu-dominio.com (no usar hasta verificarlo)
-  linkedin: '', // URL oficial de la página de ALTIVIA
-  telefono: ''  // opcional, no se publica si está vacío
+  email: 'proyectos@altiviape.com',
+  linkedin: '',
+  telefono: ''
 };
