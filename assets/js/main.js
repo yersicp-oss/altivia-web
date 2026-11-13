@@ -60,11 +60,38 @@
   const modalCategory = $('#modal-category');
   const modalMeta = $('#modal-meta');
   const modalCredit = $('#modal-credit');
+  const modalGallery = $('#modal-gallery');
   let previousFocus = null;
+  function buildGallery(card) {
+    if (!modalGallery || !modalImg || !card) return;
+    modalGallery.replaceChildren();
+    const fallbackSrc = $('img', card)?.src || '';
+    const fallbackAlt = $('img', card)?.alt || '';
+    const images = (card.dataset.gallery || fallbackSrc).split('|').filter(Boolean);
+    const captions = (card.dataset.galleryCaptions || '').split('|');
+    const activate = (src, altText, button) => {
+      modalImg.src = src;
+      modalImg.alt = altText || fallbackAlt;
+      $$('.modal-thumb', modalGallery).forEach(btn => btn.classList.toggle('active', btn === button));
+    };
+    images.forEach((src, index) => {
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'modal-thumb' + (index === 0 ? ' active' : '');
+      btn.setAttribute('aria-label', `Ver imagen ${index + 1} del proyecto`);
+      const thumb = document.createElement('img');
+      thumb.src = src;
+      thumb.alt = captions[index] || fallbackAlt;
+      thumb.loading = 'lazy';
+      btn.appendChild(thumb);
+      btn.addEventListener('click', () => activate(src, captions[index] || fallbackAlt, btn));
+      modalGallery.appendChild(btn);
+      if (index === 0) activate(src, captions[index] || fallbackAlt, btn);
+    });
+  }
   function openModal(card) {
     if (!modalOverlay || !card) return;
     previousFocus = document.activeElement;
-    if (modalImg) { modalImg.src = $('img', card)?.src||''; modalImg.alt = $('img',card)?.alt||''; }
     if (modalTitle) modalTitle.textContent = card.dataset.title||'';
     if (modalDesc) modalDesc.textContent = card.dataset.description||'';
     if (modalCategory) modalCategory.textContent = card.dataset.label||'Experiencia';
@@ -76,6 +103,7 @@
         const li = document.createElement('li'); li.textContent = task; modalList.appendChild(li);
       });
     }
+    buildGallery(card);
     modalOverlay.hidden = false;
     document.body.classList.add('modal-open');
     $('.modal-close',modalOverlay)?.focus();
