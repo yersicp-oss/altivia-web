@@ -1,68 +1,44 @@
-# ALTIVIA — Sitio web corporativo V2.2 (sin sección Expertos)
+# ALTIVIA WEB V3.0 — SITIO WEB INSTITUCIONAL
 
-Sitio estático HTML/CSS/JS para GitHub Pages. Adaptado del brochure `Brochure_Altivia_Consultores_2026_v4_preview(1).pdf` (2026).
+Fecha de compilación: 19 de noviembre de 2026.
+Dominio GitHub Pages: altiviaperu.com (archivo CNAME incluido).
+Correo de consultas: proyectos@altiviape.com (FormSubmit).
 
-## Contenido
+## Instalación en GitHub Pages
+1. Descarga este ZIP y descomprímelo.
+2. En github.com/yersicp-oss/altivia-web, rama main, sube el CONTENIDO de esta carpeta a la raíz manteniendo subcarpetas y nombres.
+3. Reemplaza los archivos que coincidan; NO borres el directorio assets/img/proyectos/ que ya existe en tu repositorio.
+4. Conserva los registros DNS y la configuración de GitHub Pages para altiviaperu.com.
+5. Revisa la web publicada, idealmente con recarga forzada para renovar CSS/JS (?v=30).
+6. Verifica en FormSubmit que proyectos@altiviape.com tiene habilitado/confirmado el formulario.
 
-- `index.html`: portada corporativa, servicios, métricas y proyectos.
-- `nosotros.html`: presentación, enfoque y valores.
-- `servicios.html`: ingeniería de relaves, geotecnia, geofísica, hidráulica, gestión y permisos.
-- `proyectos.html`: 7 proyectos documentados con fichas, filtros y buscador.
-- `expertos.html`: redirección de compatibilidad al inicio; no publica nombres ni fichas del equipo.
-- `contacto.html`: formulario web con FormSubmit a proyectos@altiviape.com.
-- `gracias.html`: confirmación del formulario.
-- `privacidad.html`: aviso informativo revisable por asesoría legal.
+## Cambios V3.0
+- Se elimina del Inicio la sección «03 / Proyectos seleccionados».
+- Pie de página de tres columnas: Servicios, Experiencia e Información; sin columna de logo, descripción o valores.
+- Proyectos: 3 culminados y 4 en proceso; filtros combinados por especialidad, estado y texto.
+- Nombres técnicos corregidos (depósitos de relaves, pulpa y filtrado, Azana).
+- Contacto: correo oficial visible, campo ubicación opcional, teléfono existente, sin «Red profesional» ni «Consulta por formulario».
+- Actualiza redirecciones del formulario al dominio altiviaperu.com.
+- Enlaces de experiencia por estado.
+- SEO: sitemap.xml y robots.txt.
 
-## Publicación en GitHub Pages
+## Nota técnica importante sobre la galería fotográfica
+Esta V3.0 se construyó a partir de la copia íntegra ALTIVIA WEB V2.2, que contiene
+las 7 imágenes principales de proyectos y todas las imágenes corporativas del sitio.
+Tu repositorio GitHub actual contiene además 14 fotografías de las galerías,
+ubicadas en assets/img/proyectos/project01-photo1.jpg ... project07-photo2.jpg.
+Esas 14 fotografías no estaban en la copia ZIP V2.2 accesible para compilación
+y no se incluyen en ESTE ZIP. No se reemplazan ni se eliminan al subir los archivos.
+La página conserva sus rutas y galerías y muestra una imagen disponible si
+alguna fotografía falta; para despliegues nuevos desde cero, se deben copiar
+también esas 14 fotografías del repositorio original.
 
-1. Descomprime el ZIP.
-2. Abre el repositorio `yersicp-oss/altivia-web` en GitHub.
-3. Sube **todo el contenido** del ZIP a la raíz de la rama `main` y **reemplaza** los archivos anteriores; no subas la carpeta contenedora.
-4. En `Settings > Pages`: `Deploy from a branch > main > /(root)`.
-5. Abre `https://yersicp-oss.github.io/altivia-web/`.
+Para crear un respaldo 100% autónomo con las 14 fotos, descarga la carpeta
+assets/img/proyectos desde GitHub e incorpórala a este paquete antes de subir.
 
-## Atención
+## Archivos principales
+index.html, nosotros.html, servicios.html, proyectos.html, contacto.html,
+gracias.html, privacidad.html, expertos.html, CNAME, sitemap.xml, robots.txt,
+assets/css/styles.css, assets/js/config.js, assets/js/main.js y assets/img/*.
 
-- El sitio usa FormSubmit externo; el correo proyectos@altiviape.com debe **activar** FormSubmit siguiendo el primer correo de confirmación y realizar un segundo envío de prueba. No basta con publicar HTML para garantizar recepción.
-- Revisa la publicación y autorizaciones del material técnico, las fotografías y los nombres de clientes y colaboradores antes de publicarlo.
-- Algunas imágenes satelitales son de Google Earth según créditos del brochure; verificar licencias, atribuciones y permisos antes de difundirlas.
-- Los proyectos son parte de un conjunto de experiencias desarrolladas o en desarrollo; no se afirma que todos estén concluidos.
-- El aviso de privacidad es un borrador informativo y requiere revisión de responsables legales.
-- El pie de página contiene el correo y teléfono consignados en el brochure: +51 970 742 042.
-- Para los currículums que se reciban, establecer un aviso de tratamiento de datos antes de solicitar información sensible.
-
-## Diseño
-
-Estilo editorial corporativo minimalista: azul marino, blanco, acentos rojos, Montserrat y fotografías reales. Barra lateral fija en escritorio y menú móvil. Contenido responsive y accesible.
-
-## Actualizar el contenido
-
-- Proyectos: editar `proyectos.html` y sus tarjetas `article.project-card`.
-- Expertos: editar `expertos.html`; añadir imágenes en `assets/img/`.
-- Datos de contacto: `assets/js/config.js`, `contacto.html` y footer compartido en los HTML.
-- Colores y diseño: `assets/css/styles.css`.
-
-
-## Identidad de marca — actualización V2.1
-
-Se integraron archivos oficiales facilitados por ALTIVIA y se retiró el logotipo provisional en las zonas de navegación y pie de página.
-
-- **Menú lateral de escritorio:** `assets/img/logo-horizontal-oficial.png` (original: LOGO HORIZONTAL PORTADA BLANCO.png).
-- **Barra móvil:** mismo horizontal oficial para identidad consistente y legible.
-- **Pie de página azul:** `assets/img/logo-pie-oficial.png` (original: LOGO HORIZONTAL BLANCO.png).
-- **Favicon y acceso desde dispositivos móviles:** símbolo extraído del archivo oficial `LOGO VERTICAL PERFIL BLANCO.png`, colocado sobre fondo azul corporativo.
-- **Archivos de reserva de identidad:** `logo-perfil-oficial.png` y `logo-impresion-oficial.png` disponibles para futuros usos.
-
-Los logos originales se han recortado solo en el área transparente vacía y redimensionado proporcionalmente para uso web; no se han alterado sus trazos. No superponer los logos blancos sobre fondos blancos.
-
-La integración es local y **no actualiza por sí sola el repositorio GitHub Pages**. Subir los archivos de este paquete para publicar la versión V2.1.
-
-## Cambio V2.2 — Sección Expertos retirada
-
-Se eliminó la sección de perfiles personales de Inicio y los enlaces a Expertos del menú y del pie de página. El antiguo `expertos.html` solo redirige al Inicio para que una URL antigua no muestre contenido desactualizado. Se retiraron del paquete las cinco fotografías de perfil. Actualiza el sitio en GitHub conservando esta redirección o elimina `expertos.html` desde el repositorio.
-
-
-## Actualización V2.3
-- Se incorporó una galería de imágenes en cada proyecto.
-- Se añadieron 14 imágenes exportadas del brochure PPT en `assets/img/proyectos/`.
-- Los modales de proyectos ahora muestran imágenes complementarias cuando el usuario abre cada ficha.
+No se modifica el repositorio automáticamente.
