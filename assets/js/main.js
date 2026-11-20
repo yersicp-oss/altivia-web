@@ -20,10 +20,13 @@
 
   const cards = $$('.project-card[data-category]');
   const filters = $$('.filter-btn[data-filter]');
+  const statusFilters = $$('.filter-btn[data-status-filter]');
+  const statusGroups = $$('.project-status-group[data-status-group]');
   const search = $('#projects-search');
   const count = $('#projects-count');
   const empty = $('#projects-empty');
   let currentCategory = 'todos';
+  let currentStatus = 'todos';
   function normalize(str) { return (str||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,''); }
   function filterProjects() {
     if (!cards.length) return;
@@ -31,12 +34,16 @@
     let n = 0;
     cards.forEach(card => {
       const byCategory = currentCategory === 'todos' || card.dataset.category === currentCategory;
-      const byText = !query || normalize([card.dataset.title, card.dataset.description, card.dataset.category, card.dataset.areas].join(' ')).includes(query);
-      const visible = byCategory && byText;
+      const byText = !query || normalize([card.dataset.title, card.dataset.description, card.dataset.category, card.dataset.status, card.dataset.areas].join(' ')).includes(query);
+      const byStatus = currentStatus === 'todos' || card.dataset.status === currentStatus;
+      const visible = byCategory && byStatus && byText;
       card.classList.toggle('hidden-card', !visible);
       if (visible) n++;
     });
-    if (count) count.textContent = `${n} ${n === 1 ? 'proyecto' : 'proyectos'} seleccionados`;
+    statusGroups.forEach(group => {
+      group.hidden = !Array.from(group.querySelectorAll('.project-card')).some(card => !card.classList.contains('hidden-card'));
+    });
+    if (count) count.textContent = `${n} ${n === 1 ? 'proyecto disponible' : 'proyectos disponibles'}`;
     if (empty) empty.hidden = n !== 0;
   }
   filters.forEach(btn => btn.addEventListener('click', () => {
@@ -44,6 +51,16 @@
     filters.forEach(b => { b.classList.toggle('active', b === btn); b.setAttribute('aria-pressed', String(b===btn)); });
     filterProjects();
   }));
+  statusFilters.forEach(btn => btn.addEventListener('click', () => {
+    currentStatus = btn.dataset.statusFilter;
+    statusFilters.forEach(b => { b.classList.toggle('active', b === btn); b.setAttribute('aria-pressed', String(b === btn)); });
+    filterProjects();
+  }));
+  const requestedStatus = new URLSearchParams(window.location.search).get('estado');
+  if (requestedStatus && statusFilters.some(btn => btn.dataset.statusFilter === requestedStatus)) {
+    currentStatus = requestedStatus;
+    statusFilters.forEach(b => { b.classList.toggle('active', b.dataset.statusFilter === requestedStatus); b.setAttribute('aria-pressed', String(b.dataset.statusFilter === requestedStatus)); });
+  }
   search?.addEventListener('input', filterProjects);
   const requestedCategory = new URLSearchParams(window.location.search).get('categoria');
   if (requestedCategory && filters.some(btn => btn.dataset.filter === requestedCategory)) {
@@ -54,44 +71,56 @@
 
   const modalOverlay = $('#project-modal');
   const modalImg = $('#modal-image');
+  const modalGallery = $('#modal-gallery');
   const modalTitle = $('#modal-title');
   const modalDesc = $('#modal-description');
   const modalList = $('#modal-list');
   const modalCategory = $('#modal-category');
   const modalMeta = $('#modal-meta');
   const modalCredit = $('#modal-credit');
-  const modalGallery = $('#modal-gallery');
   let previousFocus = null;
+
   function buildGallery(card) {
-    if (!modalGallery || !modalImg || !card) return;
+    if (!modalImg || !modalGallery || !card) return;
     modalGallery.replaceChildren();
-    const fallbackSrc = $('img', card)?.src || '';
-    const fallbackAlt = $('img', card)?.alt || '';
-    const images = (card.dataset.gallery || fallbackSrc).split('|').filter(Boolean);
+    const cover = card.querySelector('.project-media img');
+    const fallbackSrc = cover?.getAttribute('src') || 'assets/img/aerial-relaves.webp';
+    const fallbackAlt = cover?.alt || '';
+    const images = (card.dataset.gallery || '').split('|').filter(Boolean);
     const captions = (card.dataset.galleryCaptions || '').split('|');
-    const activate = (src, altText, button) => {
+    const activate = (src, altText, activeBtn) => {
+      modalImg.onerror = () => {modalImg.onerror = null; modalImg.src = fallbackSrc;};
       modalImg.src = src;
       modalImg.alt = altText || fallbackAlt;
-      $$('.modal-thumb', modalGallery).forEach(btn => btn.classList.toggle('active', btn === button));
+      modalGallery.querySelectorAll('.modal-thumb').forEach(btn => btn.classList.toggle('active', btn === activeBtn));
     };
-    images.forEach((src, index) => {
+    if (!images.length) {
+      modalGallery.hidden = true;
+      activate(fallbackSrc, fallbackAlt, null);
+      return;
+    }
+    modalGallery.hidden = false;
+    images.forEach((src,index) => {
       const btn = document.createElement('button');
-      btn.type = 'button';
-      btn.className = 'modal-thumb' + (index === 0 ? ' active' : '');
-      btn.setAttribute('aria-label', `Ver imagen ${index + 1} del proyecto`);
-      const thumb = document.createElement('img');
-      thumb.src = src;
-      thumb.alt = captions[index] || fallbackAlt;
-      thumb.loading = 'lazy';
+      btn.type='button'; btn.className='modal-thumb'+(index===0?' active':'');
+      btn.setAttribute('aria-label', `Ver imagen ${index+1} del proyecto`);
+      const thumb=document.createElement('img');
+      thumb.src=src;
+      thumb.alt=captions[index] || fallbackAlt;
+      thumb.loading='lazy';
+      thumb.onerror=()=>{thumb.onerror=null;thumb.src=fallbackSrc;};
       btn.appendChild(thumb);
-      btn.addEventListener('click', () => activate(src, captions[index] || fallbackAlt, btn));
+      btn.addEventListener('click',()=>activate(src,captions[index]||fallbackAlt,btn));
       modalGallery.appendChild(btn);
-      if (index === 0) activate(src, captions[index] || fallbackAlt, btn);
+      if(index===0) activate(src,captions[index]||fallbackAlt,btn);
     });
   }
+
   function openModal(card) {
     if (!modalOverlay || !card) return;
     previousFocus = document.activeElement;
+    if (modalImg) { modalImg.src = $('img', card)?.src||''; modalImg.alt = $('img',card)?.alt||''; }
+    buildGallery(card);
     if (modalTitle) modalTitle.textContent = card.dataset.title||'';
     if (modalDesc) modalDesc.textContent = card.dataset.description||'';
     if (modalCategory) modalCategory.textContent = card.dataset.label||'Experiencia';
@@ -103,7 +132,6 @@
         const li = document.createElement('li'); li.textContent = task; modalList.appendChild(li);
       });
     }
-    buildGallery(card);
     modalOverlay.hidden = false;
     document.body.classList.add('modal-open');
     $('.modal-close',modalOverlay)?.focus();
